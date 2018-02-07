@@ -1,7 +1,7 @@
 ---
 applications:
 - name: edge-service
-  memory: 700mb
+  memory: 850mb
   timeout: 180
   instances: 1
   host: edge-service-${random-word}

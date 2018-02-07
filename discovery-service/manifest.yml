@@ -1,7 +1,7 @@
 ---
 applications:
 - name: discovery-service
-  memory: 512M
+  memory: 850M
   instances: 1
   host: discovery-service-${random-word}
   path: target/discovery-service-0.0.1-SNAPSHOT.jar
