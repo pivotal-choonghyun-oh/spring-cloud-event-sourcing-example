@@ -1,0 +1,7 @@
+---
+applications:
+- name: zipkin
+  memory: 1200M
+  buildpack: java_buildpack_offline
+  instances: 1
+  path: target/zipkin-tracing-0.0.1-SNAPSHOT.jar
