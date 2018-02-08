@@ -35,8 +35,7 @@ public class CatalogServiceV1 {
     }
 
     private Catalog fallbackGetCatalog() {
-        //
-	lastCatalog.setName("HYSTRIX!!");
+	lastCatalog.setName("-HYSTRIX-:" + lastCatalog.getName());
 	return this.lastCatalog;
        // return new Catalog();
     }
@@ -65,7 +64,7 @@ public class CatalogServiceV1 {
     private Product fallbackGetProduct(String productId) {
 	Product product = hashmap.get(productId);
 
-	product.setName("HYSTRIX-PRODUCT!");
+	product.setName("-HYSTRIX-:" + product.getName());
 
 	return product;
     }
