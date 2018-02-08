@@ -35,9 +35,16 @@ public class CatalogServiceV1 {
     }
 
     private Catalog fallbackGetCatalog() {
-	lastCatalog.setName("-HYSTRIX-:" + lastCatalog.getName());
-	return this.lastCatalog;
-       // return new Catalog();
+        lastCatalog.setName("-HYSTRIX catalog fallback-");
+
+        Set<Product> productset = lastCatalog.getProducts();
+
+        for (Product product: productset) {
+            product.setProductId("SKU-00000");
+            break;
+        }
+
+	    return this.lastCatalog;
     }
 
 
@@ -62,9 +69,17 @@ public class CatalogServiceV1 {
     }
 
     private Product fallbackGetProduct(String productId) {
+
 	Product product = hashmap.get(productId);
 
-	product.setName("-HYSTRIX-:" + product.getName());
+	if ( product != null ) {
+		product.setName("-HYSTRIX product fallback-:");
+	} else if ( productId.equals("SKU-00000") ) {
+		product = hashmap.get("SKU-24642");
+		product.setProductId("SKU-00000");
+	} else {
+
+	}
 
 	return product;
     }
