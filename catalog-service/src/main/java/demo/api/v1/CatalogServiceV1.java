@@ -12,23 +12,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 public class CatalogServiceV1 {
     private CatalogInfoRepository catalogInfoRepository;
     private RestTemplate restTemplate;
 
+    private Catalog lastCatalog;
+    private Product lastProduct;
+    private HashMap<String, Product> hashmap;
+
     @Autowired
     public CatalogServiceV1(CatalogInfoRepository catalogInfoRepository,
                             @LoadBalanced RestTemplate restTemplate) {
         this.catalogInfoRepository = catalogInfoRepository;
         this.restTemplate = restTemplate;
+	this.lastCatalog=null;
+	this.lastProduct=null;
+
+        this.hashmap = new HashMap<>();
     }
 
     private Catalog fallbackGetCatalog() {
         //
-        return new Catalog();
+	lastCatalog.setName("HYSTRIX!!");
+	return this.lastCatalog;
+       // return new Catalog();
     }
+
 
     @HystrixCommand(fallbackMethod = "fallbackGetCatalog")
     public Catalog getCatalog() {
@@ -44,12 +56,27 @@ public class CatalogServiceV1 {
                 catalog.getId()), ProductsResource.class);
 
         catalog.setProducts(products.getContent().stream().collect(Collectors.toSet()));
+
+	lastCatalog = catalog;
+
         return catalog;
     }
 
-    @HystrixCommand
+    private Product fallbackGetProduct(String productId) {
+	Product product = hashmap.get(productId);
+
+	product.setName("HYSTRIX-PRODUCT!");
+
+	return product;
+    }
+
+    @HystrixCommand(fallbackMethod = "fallbackGetProduct")
     public Product getProduct(String productId) {
-        return restTemplate.getForObject(String.format("http://inventory-service/v1/products/%s",
+        Product product =  restTemplate.getForObject(String.format("http://inventory-service/v1/products/%s",
                 productId), Product.class);
+
+	hashmap.put(productId, product);	
+
+        return product;
     }
 }
