@@ -16,7 +16,7 @@ curl -L 'http://online-store-web.apps.sec.mzdemo.net/api/user/uaa/v1/me' -H 'Hos
 curl 'http://online-store-web.apps.sec.mzdemo.net/api/account/v1/accounts' -H 'Host: online-store-web.apps.sec.mzdemo.net' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:58.0) Gecko/20100101 Firefox/58.0' -H 'Accept: application/json, text/plain, */*' -H 'Accept-Language: en-US,en;q=0.5' --compressed -H 'Referer: http://online-store-web.apps.sec.mzdemo.net/' -L -k -v -c ./c1.txt -b ./c1.txt -o ./step5.out
 
 
-MAX_REQ=1000
+MAX_REQ=100000
 MAX_USER=5
 
 #cookie
